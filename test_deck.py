@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from blackjack import Deck
+from deck import Deck
 
 
 class TestDeckOfCards(TestCase):
