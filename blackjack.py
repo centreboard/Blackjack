@@ -1,22 +1,33 @@
 import random
 from typing import List
+from collections import deque
+from typing import Iterable
 
 from deck import Deck
-from player import Player, AIPlayer, RandomPlayer
+from player import Player, AiPlayer, RandomPlayer
 
 
-def print_game_results(players: List[Player]):
+def get_game_results(players: Iterable[Player]):
     player_values = [(player, player.value()) for player in players]
     player_values.sort(key=lambda x: x[1], reverse=True)
 
     losers = [player for player, value in player_values if value > 21]
     eligible_players = [player for player, value in player_values if value <= 21]
-
+    winners = []
     if eligible_players:
         winning_value = max((value for _, value in player_values if value <= 21))
         for player, _ in filter(lambda x: x[1] == winning_value, player_values):
-            print(f"Winner: {player}")
+            winners.append(player)
             player.wins += 1
+    return winners, eligible_players, losers
+
+
+def print_game_results(players: Iterable[Player]):
+    winners, eligible_players, losers = get_game_results(players)
+
+    if winners:
+        for player in winners:
+            print(f"Winner: {player}")
     else:
         print("No winner")
     for player in eligible_players:
@@ -25,15 +36,16 @@ def print_game_results(players: List[Player]):
         player.print_player()
 
 
-def print_overall_results(players: List[Player]):
+def print_overall_results(players: Iterable[Player]):
     for player in sorted(players, key=lambda x: x.wins, reverse=True):
         print(f"{player.name} - Wins: {player.wins}")
 
 
-def game(players: List[Player], game_deck: Deck):
-    print("====================")
-    print("New game")
-    print("====================")
+def game(players: Iterable[Player], game_deck: Deck, always_print=True):
+    if always_print:
+        print("====================")
+        print("New game")
+        print("====================")
 
     for player in players:
         player.reset_hand()
@@ -48,29 +60,36 @@ def game(players: List[Player], game_deck: Deck):
     current_players = [player for player in players if not player.finished and player.value() < 21]
     while current_players:
         for player in current_players:
-            player.print_player()
+            if always_print:
+                player.print_player()
             player.choose_take_card(game_deck)
         current_players = [player for player in players if not player.finished and player.value() < 21]
 
-    print("====================")
-    print_game_results(players)
-    print("====================")
-    print_overall_results(players)
-    print("====================")
+    if always_print:
+        print("====================")
+        print_game_results(players)
+        print("====================")
+        print_overall_results(players)
+        print("====================")
+    else:
+        get_game_results(players)
 
 
 def main():
-    deck = Deck()
+    deck = Deck(True)
 
-    sam = Player("Sam")
-    hannah = RandomPlayer("Hannah", 0)
-    matt = AIPlayer("Matthew", 16)
-    players = [hannah, matt]
+    sam = AiPlayer("Sam", 17)
+    hannah = AiPlayer("Hannah", 16)
+    matt = AiPlayer("Matthew", 15)
+    players = deque([matt, hannah, sam])
 
-    #while deck:
-    for _ in range(10000):
-        random.shuffle(players)
-        game(players, deck)
+    # while deck:
+    for _ in range(100000):
+        game(players, deck, False)
+        players.rotate(1)
+    print("====================")
+    print_overall_results(players)
+    print("====================")
 
 
 if __name__ == '__main__':

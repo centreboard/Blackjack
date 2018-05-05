@@ -65,7 +65,7 @@ class Player:
         return total_non_aces + total_aces
 
 
-class AIPlayer(Player):
+class AiPlayer(Player):
     def __init__(self, name: str, limit=15):
         super().__init__(name)
         self.limit = limit
