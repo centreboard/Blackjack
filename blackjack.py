@@ -2,7 +2,7 @@ import random
 from typing import List
 
 from deck import Deck
-from player import Player
+from player import Player, AIPlayer, RandomPlayer
 
 
 def print_game_results(players: List[Player]):
@@ -63,11 +63,12 @@ def main():
     deck = Deck()
 
     sam = Player("Sam")
-    hannah = Player("Hannah")
-    matt = Player("Matthew")
-    players = [matt, hannah, sam]
+    hannah = RandomPlayer("Hannah", 0)
+    matt = AIPlayer("Matthew", 16)
+    players = [hannah, matt]
 
-    while deck:
+    #while deck:
+    for _ in range(10000):
         random.shuffle(players)
         game(players, deck)
 

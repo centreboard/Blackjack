@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 from card import Card
@@ -62,3 +63,27 @@ class Player:
                 break
 
         return total_non_aces + total_aces
+
+
+class AIPlayer(Player):
+    def __init__(self, name: str, limit=15):
+        super().__init__(name)
+        self.limit = limit
+
+    def choose_take_card(self, cards: Deck, get_input=input):
+        if self.value() <= self.limit:
+            self.take_card(cards)
+        else:
+            self.finished = True
+
+
+class RandomPlayer(Player):
+    def __init__(self, name: str, limit=0.5):
+        super().__init__(name)
+        self.limit = limit
+
+    def choose_take_card(self, cards: Deck, get_input=input):
+        if random.random() < self.limit:
+            self.take_card(cards)
+        else:
+            self.finished = True
