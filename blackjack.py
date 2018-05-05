@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 from deck import Deck
@@ -37,11 +38,13 @@ def game(players: List[Player], game_deck: Deck):
     for player in players:
         player.reset_hand()
 
+    # Start with two cards for each player
     for player in players:
         player.take_card(game_deck)
     for player in players:
         player.take_card(game_deck)
 
+    # Choose to stick or twist
     current_players = [player for player in players if not player.finished and player.value() < 21]
     while current_players:
         for player in current_players:
@@ -65,6 +68,7 @@ def main():
     players = [matt, hannah, sam]
 
     while deck:
+        random.shuffle(players)
         game(players, deck)
 
 
