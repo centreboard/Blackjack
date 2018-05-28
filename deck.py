@@ -1,5 +1,4 @@
 import random
-from typing import Iterator, List
 
 from card import Card
 
@@ -12,7 +11,7 @@ class Deck:
     def __len__(self):
         return len(self._cards)
 
-    def __iter__(self) -> Iterator[Card]:
+    def __iter__(self):
         return self._cards.__iter__()
 
     def random_card(self) -> Card:
@@ -26,7 +25,7 @@ class Deck:
         return card
 
     @staticmethod
-    def new_deck() -> List[Card]:
+    def new_deck():
         """
         A new deck of 52 cards
         """

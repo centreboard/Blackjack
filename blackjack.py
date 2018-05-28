@@ -1,13 +1,11 @@
 import random
-from typing import List
 from collections import deque
-from typing import Iterable
 
 from deck import Deck
 from player import Player, AiPlayer, RandomPlayer
 
 
-def get_game_results(players: Iterable[Player]):
+def get_game_results(players):
     player_values = [(player, player.value()) for player in players]
     player_values.sort(key=lambda x: x[1], reverse=True)
 
@@ -22,12 +20,12 @@ def get_game_results(players: Iterable[Player]):
     return winners, eligible_players, losers
 
 
-def print_game_results(players: Iterable[Player]):
+def print_game_results(players):
     winners, eligible_players, losers = get_game_results(players)
 
     if winners:
         for player in winners:
-            print(f"Winner: {player}")
+            print("Winner: " + player)
     else:
         print("No winner")
     for player in eligible_players:
@@ -36,12 +34,12 @@ def print_game_results(players: Iterable[Player]):
         player.print_player()
 
 
-def print_overall_results(players: Iterable[Player]):
+def print_overall_results(players):
     for player in sorted(players, key=lambda x: x.wins, reverse=True):
-        print(f"{player.name} - Wins: {player.wins}")
+        print("{0} - Wins: {1}".format(player.name, player.wins))
 
 
-def game(players: Iterable[Player], game_deck: Deck, always_print=True):
+def game(players, game_deck: Deck, always_print=True):
     if always_print:
         print("====================")
         print("New game")
