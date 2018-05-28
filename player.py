@@ -36,7 +36,7 @@ class Player:
         print(", ".join(str(card) for card in self.cards))
 
     def print_player(self):
-        print(self.name + ": Total = " + self.value())
+        print(self.name + ": Total = " + str(self.value()))
         self.print_hand()
 
     def value(self) -> int:

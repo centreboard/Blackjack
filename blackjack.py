@@ -25,7 +25,7 @@ def print_game_results(players):
 
     if winners:
         for player in winners:
-            print("Winner: " + player)
+            print("Winner: " + player.name)
     else:
         print("No winner")
     for player in eligible_players:
@@ -76,14 +76,14 @@ def game(players, game_deck: Deck, always_print=True):
 def main():
     deck = Deck(True)
 
-    sam = AiPlayer("Sam", 17)
+    sam = Player("Sam")
     hannah = AiPlayer("Hannah", 16)
-    matt = AiPlayer("Matthew", 15)
+    matt = Player("Matthew")
     players = deque([matt, hannah, sam])
 
     # while deck:
     for _ in range(100000):
-        game(players, deck, False)
+        game(players, deck, True)
         players.rotate(1)
     print("====================")
     print_overall_results(players)
