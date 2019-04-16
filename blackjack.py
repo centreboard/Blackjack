@@ -4,7 +4,9 @@ from collections import deque
 from typing import Iterable
 
 from deck import Deck
-from player import Player, AiPlayer, RandomPlayer
+from player import Player
+from ai_player import AiPlayer
+from random_player import RandomPlayer
 
 
 def get_game_results(players: Iterable[Player]):

@@ -1,16 +1,17 @@
-import random
+from abc import ABC, abstractmethod
 from typing import List
 
 from card import Card
 from deck import Deck
 
 
-class Player:
+class Player(ABC):
     def __init__(self, name: str):
         self.name = name
         self.cards: List[Card] = []
         self.finished = False
         self.wins = 0
+        super().__init__()
 
     def __str__(self):
         return self.name
@@ -23,15 +24,9 @@ class Player:
         card = deck.random_card()
         self.cards.append(card)
 
+    @abstractmethod
     def choose_take_card(self, cards: Deck, get_input=input):
-        take_card = get_input("Take card (y/N)? >").strip().lower()
-        if take_card.startswith("y"):
-            self.take_card(cards)
-        elif take_card.startswith("n"):
-            self.finished = True
-        else:
-            print("Invalid input")
-            self.choose_take_card(cards, get_input)
+        pass
 
     def print_hand(self):
         print(", ".join(str(card) for card in self.cards))
@@ -64,26 +59,3 @@ class Player:
 
         return total_non_aces + total_aces
 
-
-class AiPlayer(Player):
-    def __init__(self, name: str, limit=15):
-        super().__init__(name)
-        self.limit = limit
-
-    def choose_take_card(self, cards: Deck, get_input=input):
-        if self.value() <= self.limit:
-            self.take_card(cards)
-        else:
-            self.finished = True
-
-
-class RandomPlayer(Player):
-    def __init__(self, name: str, limit=0.5):
-        super().__init__(name)
-        self.limit = limit
-
-    def choose_take_card(self, cards: Deck, get_input=input):
-        if random.random() < self.limit:
-            self.take_card(cards)
-        else:
-            self.finished = True

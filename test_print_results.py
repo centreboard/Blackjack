@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from blackjack import print_game_results
-from player import Player
+from human_player import HumanPlayer
 from card import Card
 
 
@@ -10,7 +10,7 @@ from card import Card
 @patch('blackjack.print')
 class TestPrintResults(TestCase):
     def test_print_results__one_person__is_winner(self, mock_print: MagicMock):
-        person = Player("Matthew")
+        person = HumanPlayer("Matthew")
         person.print_player = MagicMock()
         person.cards = []
 
@@ -19,14 +19,14 @@ class TestPrintResults(TestCase):
         mock_print.assert_called_once_with("Winner: Matthew")
 
     def test_print_results__one_person_empty_hand(self, mock_print: MagicMock):
-        person = Player("Matthew")
+        person = HumanPlayer("Matthew")
         person.print_player = MagicMock()
         print_game_results([person])
 
         person.print_player.assert_called_once()
 
     def test_print_results__one_person_low_hand(self, mock_print: MagicMock):
-        person = Player("Matthew")
+        person = HumanPlayer("Matthew")
         person.print_player = MagicMock()
         person.cards = [Card(2, "Test")]
         print_game_results([person])
@@ -34,7 +34,7 @@ class TestPrintResults(TestCase):
         person.print_player.assert_called_once()
 
     def test_print_results__one_person_high_hand(self, mock_print: MagicMock):
-        person = Player("Matthew")
+        person = HumanPlayer("Matthew")
         person.print_player = MagicMock()
         person.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
         print_game_results([person])
@@ -42,15 +42,15 @@ class TestPrintResults(TestCase):
         person.print_player.assert_called_once()
 
     def test_print_results__people_print_person_called_once(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(2, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(5, "Test")]
 
@@ -58,19 +58,18 @@ class TestPrintResults(TestCase):
         print_game_results(players)
         for player in players:
             with self.subTest(player=player.name):
-                # noinspection PyUnresolvedReferences
                 player.print_player.assert_called_once()
 
     def test_print_results__people_single_winner(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(2, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(5, "Test")]
 
@@ -80,15 +79,15 @@ class TestPrintResults(TestCase):
         mock_print.assert_called_once_with("Winner: Sam")
 
     def test_print_results__people_joint_winner(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(2, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(10, "Test")]
 
@@ -100,15 +99,15 @@ class TestPrintResults(TestCase):
         self.assertRaises(AssertionError, lambda: mock_print.assert_any_call("Winner: Matthew"))
 
     def test_print_results__people_single_winner_one_over(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(5, "Test")]
 
@@ -118,15 +117,15 @@ class TestPrintResults(TestCase):
         mock_print.assert_called_once_with("Winner: Sam")
 
     def test_print_results__people_joint_winner_one_over(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(10, "Test")]
 
@@ -138,15 +137,15 @@ class TestPrintResults(TestCase):
         self.assertRaises(AssertionError, lambda: mock_print.assert_any_call("Winner: Matthew"))
 
     def test_print_results__people_no_winner(self, mock_print: MagicMock):
-        matt = Player("Matthew")
+        matt = HumanPlayer("Matthew")
         matt.print_player = MagicMock()
         matt.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
 
-        sam = Player("Sam")
+        sam = HumanPlayer("Sam")
         sam.print_player = MagicMock()
         sam.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
 
-        hannah = Player("Hannah")
+        hannah = HumanPlayer("Hannah")
         hannah.print_player = MagicMock()
         hannah.cards = [Card(10, "Test"), Card(10, "Test"), Card(10, "Test")]
 
